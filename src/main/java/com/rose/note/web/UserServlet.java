@@ -60,7 +60,7 @@ public class UserServlet extends HttpServlet {
 				resp.addCookie(cookie);
 			}
 			// redirect to index
-			resp.sendRedirect("index.jsp");
+			resp.sendRedirect("index");
 		}
 		else { //fail
 			// put resultInfo into request
