@@ -91,14 +91,14 @@
 		var userName = $("#userName").val(); // Username
 		var userPwd = $("#userPwd").val(); //password
 
-		// if (isEmpty(userName)) {
-		// 	$("#msg").html("Username can't be empty");
-		// 	return;
-		// }
-		// if (isEmpty(userPwd)) {
-		// 	$("#msg").html("Password can't be empty");
-		// 	return;
-		// }
+		if (isEmpty(userName)) {
+			$("#msg").html("Username can't be empty");
+			return;
+		}
+		if (isEmpty(userPwd)) {
+			$("#msg").html("Password can't be empty");
+			return;
+		}
 
 		$("#loginForm").submit();
 	}

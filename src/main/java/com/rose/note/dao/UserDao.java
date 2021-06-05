@@ -5,9 +5,26 @@ import com.rose.note.util.DBUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
+
 	public User queryUserByName(String userName) {
+
+		// define sql query
+		String sql = "select * from tb_user where uname = ?";
+
+		// set params list
+		List<Object> params = new ArrayList<>();
+		params.add(userName);
+		// call query method in BaseDao
+		User user = (User) BaseDao.queryRow(sql, params, User.class);
+
+		return user;
+	}
+
+	public User queryUserByNameDeprecate(String userName) {
 		User user = null;
 
 		Connection connection = null;
@@ -30,7 +47,7 @@ public class UserDao {
 				user = new User();
 				user.setUserId(resultSet.getInt("userId"));
 				user.setUname(userName);
-				user.setAvatar(resultSet.getString("head"));
+				user.setHead(resultSet.getString("head"));
 				user.setMood(resultSet.getString("mood"));
 				user.setNick(resultSet.getString("nick"));
 				user.setUpwd(resultSet.getString("upwd"));

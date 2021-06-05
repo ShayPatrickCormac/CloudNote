@@ -10,7 +10,7 @@ public class User {
 	private String uname; //Username
 	private String upwd; //Password
 	private String nick; //nickname
-	private String Avatar;
+	private String head;
 	private String mood;
 }
 
