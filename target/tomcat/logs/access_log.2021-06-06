@@ -1,0 +1,13 @@
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:25 -0400] "GET /note/login.jsp HTTP/1.1" 200 2665 http-bio-8080-exec-1 64
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:25 -0400] "GET /note/undefined HTTP/1.1" 302 - http-bio-8080-exec-3 2
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:25 -0400] "GET /note/login.jsp HTTP/1.1" 200 2665 http-bio-8080-exec-4 0
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:33 -0400] "POST /note/user HTTP/1.1" 302 - http-bio-8080-exec-5 259
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:33 -0400] "GET /note/index HTTP/1.1" 200 6420 http-bio-8080-exec-6 18
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:43 -0400] "GET /note/index HTTP/1.1" 302 - http-bio-8080-exec-1 27
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:44 -0400] "GET /note/login.jsp HTTP/1.1" 200 2665 http-bio-8080-exec-3 37
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:44 -0400] "GET /note/undefined HTTP/1.1" 302 - http-bio-8080-exec-4 1
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:44 -0400] "GET /note/login.jsp HTTP/1.1" 200 2665 http-bio-8080-exec-5 1
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:53 -0400] "POST /note/user HTTP/1.1" 302 - http-bio-8080-exec-6 198
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:08:53 -0400] "GET /note/index HTTP/1.1" 200 6420 http-bio-8080-exec-7 16
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:09:14 -0400] "GET /note/index HTTP/1.1" 302 - http-bio-8080-exec-1 235
+0:0:0:0:0:0:0:1 - - [06/Jun/2021:00:09:14 -0400] "GET /note/index HTTP/1.1" 200 6420 http-bio-8080-exec-3 50
