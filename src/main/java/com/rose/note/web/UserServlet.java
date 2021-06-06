@@ -3,6 +3,7 @@ package com.rose.note.web;
 import com.rose.note.po.User;
 import com.rose.note.service.UserService;
 import com.rose.note.vo.ResultInfo;
+import org.apache.commons.io.FileUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 
 @WebServlet("/user")
@@ -19,6 +21,8 @@ public class UserServlet extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// Set navbar highlight
+		req.setAttribute("menu_page", "user");
 		// Receive user action
 		String actionName = req.getParameter("actionName");
 		// Determine the action, call the corresponding method
@@ -26,6 +30,55 @@ public class UserServlet extends HttpServlet {
 			//login
 			userLogin(req, resp);
 		}
+		else if ("logout".equals(actionName)) {
+			userLogout(req, resp);
+		}
+		else if ("userCenter".equals(actionName)) {
+			userCenter(req, resp);
+		}
+		else if ("userHead".equals(actionName)) {
+			//load Avatar
+			userHead(req, resp);
+		}
+	}
+
+	private void userHead(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String avatar = req.getParameter("imageName");
+		//get path
+		String realPath = req.getServletContext().getRealPath("/WEB-INF/upload/");
+		// get file object
+		File file = new File(realPath + "/" + avatar);
+		String pic = avatar.substring(avatar.lastIndexOf(".") + 1);
+		// set resp type according to the image format
+		if ("PNG".equalsIgnoreCase(pic)) {
+			resp.setContentType("image/png");
+		}
+		else if ("JPG".equalsIgnoreCase(pic) || "JPEG".equalsIgnoreCase(pic)) {
+			resp.setContentType("image/jpeg");
+		}
+		else if ("GIF".equalsIgnoreCase(pic)) {
+			resp.setContentType("image/gif");
+		}
+		// give pic to browser
+		FileUtils.copyFile(file, resp.getOutputStream());
+	}
+
+	private void userCenter(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// Set the page to userCenter
+		req.setAttribute("changePage", "user/info.jsp");
+		// redirect to index
+		req.getRequestDispatcher("index.jsp").forward(req, resp);
+	}
+
+	private void userLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		// Destroy session
+		req.getSession().invalidate();
+		// Destroy cookie
+		Cookie cookie = new Cookie("user", null);
+		cookie.setMaxAge(0);
+		resp.addCookie(cookie);
+		// redirect to login
+		resp.sendRedirect("login.jsp");
 	}
 
 	private void userLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

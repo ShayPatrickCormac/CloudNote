@@ -36,11 +36,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="main"><i class="glyphicon glyphicon-cloud"></i>&nbsp;Main Page</a></li>
-                <li><a href="note"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Publish Note</a></li>
-                <li><a href="type"><i class="glyphicon glyphicon-list"></i>&nbsp;Manage Types</a></li>
-                <li><a href="user"><i class="glyphicon glyphicon-user"></i>&nbsp;User Center</a>
-                <li><a href="report"><i class="glyphicon glyphicon-signal"></i>&nbsp;Statistics Report</a></li>
+                <li <c:if test="${menu_page=='index'}">class="active"</c:if>><a href="index"><i class="glyphicon glyphicon-cloud"></i>&nbsp;Main Page</a></li>
+                <li <c:if test="${menu_page=='note'}">class="active"</c:if>><a href="note"><i class="glyphicon glyphicon-pencil"></i>&nbsp;Publish Note</a></li>
+                <li <c:if test="${menu_page=='type'}">class="active"</c:if>><a href="type"><i class="glyphicon glyphicon-list"></i>&nbsp;Manage Types</a></li>
+                <li <c:if test="${menu_page=='user'}">class="active"</c:if>><a href="user?actionName=userCenter"><i class="glyphicon glyphicon-user"></i>&nbsp;User Center</a>
+                <li <c:if test="${menu_page=='report'}">class="active"</c:if>><a href="report"><i class="glyphicon glyphicon-signal"></i>&nbsp;Statistics Report</a></li>
 
                 </ul>
             <form class="navbar-form navbar-right" role="search" action="main">
@@ -57,7 +57,7 @@
     <div class="row-fluid">
         <div class="col-md-3">
             <div class="data_list">
-                <div class="data_list_title"><span class="glyphicon glyphicon-user"></span>&nbsp;User Center&nbsp;&nbsp;&nbsp;&nbsp;<a href="logout">Logout</a></div>
+                <div class="data_list_title"><span class="glyphicon glyphicon-user"></span>&nbsp;User Center&nbsp;&nbsp;&nbsp;&nbsp;<a href="user?actionName=logout">Logout</a></div>
                 <div class="userimg">
                     <img src="statics/images/h2.jpg">
                 </div>

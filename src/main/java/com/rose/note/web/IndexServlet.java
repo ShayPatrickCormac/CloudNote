@@ -11,6 +11,8 @@ import java.io.IOException;
 public class IndexServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// Set navbar highlight
+		req.setAttribute("menu_page", "index");
 		// Set dynamically included index page
 		req.setAttribute("changePage", "note/list.jsp");
 		// redirect
