@@ -10,6 +10,7 @@
     <script src="statics/js/jquery-1.11.3.js"></script>
     <script src="statics/bootstrap/js/bootstrap.js"></script>
     <script src="statics/sweetalert/sweetalert2.min.js"></script>
+    <script src="statics/js/util.js"></script>
     <script type="text/javascript" src="statics/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" src="statics/ueditor/ueditor.all.js"></script>
     <style type="text/css">

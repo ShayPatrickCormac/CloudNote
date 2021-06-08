@@ -15,9 +15,9 @@
         <div class="container-fluid">
             <div class="row" style="padding-top: 20px;">
                 <div class="col-md-8">
-                    <form class="form-horizontal" method="post" action="user?act=save" enctype="multipart/form-data" onsubmit="return checkUser();">
+                    <form class="form-horizontal" method="post" action="user" enctype="multipart/form-data">
                         <div class="form-group">
-                            <input type="hidden" name="act" value="save">
+                            <input type="hidden" name="actionName" value="updateUser">
                             <label for="nickName" class="col-sm-2 control-label">NickName</label>
                             <div class="col-sm-3">
                                 <input class="form-control" name="nick" id="nickName" placeholder="NickName" value="${user.nick}">
@@ -35,7 +35,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" id="btn" class="btn btn-success">Modify</button>&nbsp;&nbsp;<span style="color:red" id="msg"></span>
+                                <button type="submit" id="btn" class="btn btn-success" onclick="return updateUser();">Modify</button>&nbsp;&nbsp;<span style="color:red; font-size: 12px" id="msg"></span>
                             </div>
                         </div>
                     </form>
@@ -45,3 +45,60 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    // get nickname value
+    $("#nickName").blur(function () {
+        var nickName = $("#nickName").val();
+        // Determine if the value is empty
+        if (isEmpty(nickName)) {
+            $("#msg").html("Username can't be empty");
+            $("#btn").prop("disabled", true);
+        }
+        // Determine if the name is changed
+        // get nickname from session
+        var nick = '${user.nick}';
+        // if same
+        if (nickName == nick) {
+            return;
+        }
+        // if not
+        $.ajax({
+            type:"get",
+            url:"user",
+            data:{
+                actionName:"checkNick",
+                nick:nickName
+            },
+            success:function (result) {
+                // if usable
+                if (result == 1) {
+                    $("#msg").html("");
+                    $("#btn").prop("disabled", false);
+                }
+                else {
+                    //if not usable
+                    $("#msg").html("Nickname already exists");
+                    $("#btn").prop("disabled", true);
+                }
+            }
+
+        });
+    }).focus(function () {
+        // clear the msg
+        $("#msg").html("");
+        $("#btn").prop("disabled", false);
+    });
+
+    function updateUser() {
+        var nickName = $("#nickName").val();
+        // Determine if the value is empty
+        if (isEmpty(nickName)) {
+            $("#msg").html("Username can't be empty");
+            $("#btn").prop("disabled", true);
+            return false;
+        }
+
+        return true;
+    }
+</script>

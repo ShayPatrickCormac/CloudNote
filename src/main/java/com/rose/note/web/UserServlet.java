@@ -6,6 +6,7 @@ import com.rose.note.vo.ResultInfo;
 import org.apache.commons.io.FileUtils;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 @WebServlet("/user")
+@MultipartConfig
 public class UserServlet extends HttpServlet {
 
 	private UserService userService = new UserService();
@@ -40,6 +42,28 @@ public class UserServlet extends HttpServlet {
 			//load Avatar
 			userHead(req, resp);
 		}
+		else if ("checkNick".equals(actionName)) {
+			checkNick(req, resp);
+		}
+		else if ("updateUser".equals(actionName)) {
+			updateUser(req, resp);
+		}
+	}
+
+	private void updateUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ResultInfo<User> resultInfo = userService.updateUser(req);
+		req.setAttribute("resultInfo", resultInfo);
+		req.getRequestDispatcher("user?actionNmae=userCenter").forward(req, resp);
+	}
+
+	private void checkNick(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String nick = req.getParameter("nick");
+		// get user from session
+		User user = (User) req.getSession().getAttribute("user");
+		Integer code = userService.checkNick(nick, user.getUserId());
+		// Use String output stream to report the result to ajax
+		resp.getWriter().write(code + "");
+		resp.getWriter().close();
 	}
 
 	private void userHead(HttpServletRequest req, HttpServletResponse resp) throws IOException {

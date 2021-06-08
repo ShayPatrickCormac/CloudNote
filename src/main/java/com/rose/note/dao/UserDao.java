@@ -61,4 +61,24 @@ public class UserDao {
 
 		return user;
 	}
+
+	public User queryUserByNickAndUserId(String nick, Integer userId) {
+		String sql = "select * from tb_user where nick = ? and userId != ?";
+		List<Object> params = new ArrayList<>();
+		params.add(nick);
+		params.add(userId);
+		User user = (User) BaseDao.queryRow(sql, params, User.class);
+		return user;
+	}
+
+	public int updateUser(User user) {
+		String sql = "update tb_user set nick = ?, mood = ?, head = ? where userId = ?";
+		List<Object> params = new ArrayList<>();
+		params.add(user.getNick());
+		params.add(user.getMood());
+		params.add(user.getHead());
+		params.add(user.getUserId());
+		int row =BaseDao.executeUpdate(sql, params);
+		return row;
+	}
 }

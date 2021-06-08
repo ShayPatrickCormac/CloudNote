@@ -6,6 +6,8 @@ import com.rose.note.dao.UserDao;
 import com.rose.note.po.User;
 import com.rose.note.vo.ResultInfo;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import javax.xml.transform.Result;
 
 public class UserService {
@@ -62,6 +64,69 @@ public class UserService {
 
 		resultInfo.setCode(1);
 		resultInfo.setResult(user);
+		return resultInfo;
+	}
+
+	public Integer checkNick(String nick, Integer userId) {
+		if (StrUtil.isBlank(nick)) {
+			return 0;
+
+		}
+		User user = userDao.queryUserByNickAndUserId(nick, userId);
+		// Determine if the user exists
+		if (user != null) {
+			return 0;
+		}
+		return 1;
+	}
+
+	public ResultInfo<User> updateUser(HttpServletRequest req) {
+		ResultInfo<User> resultInfo = new ResultInfo<>();
+		// get params
+		String nick = req.getParameter("nick");
+		String mood = req.getParameter("mood");
+		// Determine emptiness
+		if (StrUtil.isBlank(nick)) {
+			resultInfo.setCode(0);
+			resultInfo.setMsg("Nickname can't be empty");
+			return resultInfo;
+		}
+
+		// Get user from seesion
+		User user = (User) req.getSession().getAttribute("user");
+		// Set nickname and avatar
+		user.setNick(nick);
+		user.setMood(mood);
+
+		// upload file
+		try {
+			Part part = req.getPart("img");
+			String header = part.getHeader("Content-Disposition");
+			// get header values
+			String str = header.substring(header.lastIndexOf("=") + 2);
+			// get uploaded file's name
+			String fileName = str.substring(0, str.length() - 1);
+			if (!StrUtil.isBlank(fileName)) {
+				// get path of file
+				user.setHead(fileName);
+				String filePath = req.getServletContext().getRealPath("/WEB-INF/upload/");
+				part.write(filePath + "/" + fileName);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		int row = userDao.updateUser(user);
+		if (row > 0) {
+			resultInfo.setCode(1);
+			// update user in session
+			req.getSession().setAttribute("user", user);
+		}
+		else {
+			resultInfo.setCode(0);
+			resultInfo.setMsg("Failed to update user");
+		}
+
 		return resultInfo;
 	}
 }
