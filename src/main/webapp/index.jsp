@@ -91,15 +91,15 @@
                 </div>
 
                 <div>
-                    <ul class="nav nav-pills nav-stacked">
+                    <ul class="nav nav-pills nav-stacked" id="typeUl">
 
-                        <li><a href="main?act=searchType&amp;val=5&amp;valStr=test">test <span class="badge">0</span></a></li>
+                        <li id="li_1"><a href="main?act=searchType&amp;val=5&amp;valStr=test"><span id="sp_1">test</span> <span class="badge">0</span></a></li>
 
-                        <li><a href="main?act=searchType&amp;val=3&amp;valStr=%E5%B0%9A%E5%AD%A6%E5%A0%82%E7%AC%94%E8%AE%B0">Note <span class="badge">12</span></a></li>
+                        <li id="li_2"><a href="main?act=searchType&amp;val=3&amp;valStr=%E5%B0%9A%E5%AD%A6%E5%A0%82%E7%AC%94%E8%AE%B0"><span id="sp_2">Note</span> <span class="badge">12</span></a></li>
 
-                        <li><a href="main?act=searchType&amp;val=2&amp;valStr=%E6%8A%80%E6%9C%AF">Tech <span class="badge">5</span></a></li>
+                        <li id="li_3"><a href="main?act=searchType&amp;val=2&amp;valStr=%E6%8A%80%E6%9C%AF"><span id="sp_3">Tech</span> <span class="badge">5</span></a></li>
 
-                        <li><a href="main?act=searchType&amp;val=4&amp;valStr=%E8%80%81%E8%A3%B4%E8%AF%AD%E5%BD%95">Quote <span class="badge">9</span></a></li>
+                        <li id="li_7"><a href="main?act=searchType&amp;val=4&amp;valStr=%E8%80%81%E8%A3%B4%E8%AF%AD%E5%BD%95">Quote <span class="badge">9</span></a></li>
 
                     </ul>
                 </div>

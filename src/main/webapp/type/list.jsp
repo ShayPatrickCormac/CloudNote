@@ -19,14 +19,14 @@
 		</span>
 
         </div>
-        <div>
+        <div id="myDiv">
 <%--            Determine if type collection exists--%>
             <c:if test="${empty typeList}">
                 <h2>Didn't get type data</h2>
             </c:if>
             <c:if test="${!empty typeList}">
 
-            <table class="table table-hover table-striped ">
+            <table id="myTable" class="table table-hover table-striped ">
                 <tbody>
                 <tr>
                     <th>Number</th>
@@ -34,12 +34,12 @@
                     <th>Action</th>
                 </tr>
                 <c:forEach items="${typeList}" var="item">:
-                    <tr>
+                    <tr id="tr_${item.typeId}">
                         <td>${item.typeId}</td>
                         <td>${item.typeName}</td>
                         <td>
-                            <button class="btn btn-primary" type="button">Modify</button>&nbsp;
-                            <button class="btn btn-danger del" type="button">Delete</button>
+                            <button class="btn btn-primary" type="button" onclick="openUpdateDialog(${item.typeId})">Modify</button>&nbsp;
+                            <button class="btn btn-danger del" type="button" onclick="deleteType(${item.typeId})">Delete</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -61,11 +61,12 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="typename">Type Name</label>
-                        <input type="hidden" name="typeId">
-                        <input type="text" name="typename" class="form-control" id="typename" placeholder="Type Name">
+                        <input type="hidden" name="typeId" id="typeId">
+                        <input type="text" name="typename" class="form-control" id="typeName" placeholder="Type Name">
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <span id="msg" style="font-size: 12px;color: red"></span>
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         <span class="glyphicon glyphicon-remove"></span>Close</button>
                     <button type="button" id="btn_submit" class="btn btn-primary">
@@ -76,3 +77,5 @@
     </div>
 
 </div>
+
+<script type="text/javascript" src="statics/js/type.js"></script>

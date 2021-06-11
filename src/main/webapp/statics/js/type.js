@@ -10,7 +10,7 @@ function deleteType(typeId){
 	}).then(function(){
 		$.ajax({
 			type:"post",
-			url:"typeServlet",
+			url:"type",
 			data:{
 				actionName:"delete",
 				typeId:typeId
@@ -50,8 +50,10 @@ function openUpdateDialog(typeId) {
 	var tr = $("#tr_"+typeId);
 	var typeName = tr.children().eq(1).text();
 
-	$("#typename").val(typeName);
+	$("#typeName").val(typeName);
+	// var typeId = tr.children().eq(0).text();
 	$("#typeId").val(typeId);
+	$("#msg").html("")
 
 	$("#myModal").modal("show");
 	
@@ -68,7 +70,8 @@ $("#addBtn").click(function(){
 	
 
 	$("#typeId").val("");
-	$("#typename").val("");
+	$("#typeName").val("");
+	$("#msg").html("")
 	
 
 	$("#myModal").modal("show");
@@ -79,18 +82,17 @@ $("#addBtn").click(function(){
 $("#btn_submit").click(function(){
 
 	var typeId = $("#typeId").val();
-	var typeName = $("#typename").val();
+	var typeName = $("#typeName").val();
 	
 
 	if (isEmpty(typeName)) {
-
 		$("#msg").html("Type name can't be empty");
 		return;
 	}
 
 	$.ajax({
 		type:"post",
-		url:"typeServlet",
+		url:"type",
 		data:{
 			actionName:"addOrUpdate",
 			typeId:typeId,
@@ -101,6 +103,7 @@ $("#btn_submit").click(function(){
 			if (result.code == 1) {
 				$("#myModal").modal("hide");
  				if (isEmpty(typeId)) {
+ 					//prime key from backend
  					var key = result.result;
  					addDom(key,typeName);
  				} else {
