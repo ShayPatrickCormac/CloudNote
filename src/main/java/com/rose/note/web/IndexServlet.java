@@ -1,5 +1,10 @@
 package com.rose.note.web;
 
+import com.rose.note.po.Note;
+import com.rose.note.po.User;
+import com.rose.note.service.NoteService;
+import com.rose.note.util.Page;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,9 +18,25 @@ public class IndexServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// Set navbar highlight
 		req.setAttribute("menu_page", "index");
+
+		//Note pages
+		noteList(req, resp);
+
+
 		// Set dynamically included index page
 		req.setAttribute("changePage", "note/list.jsp");
 		// redirect
 		req.getRequestDispatcher("index.jsp").forward(req, resp);
+	}
+
+	private void noteList(HttpServletRequest req, HttpServletResponse resp) {
+		String pageNum = req.getParameter("pageNum");
+		String pageSize = req.getParameter("pageSize");
+
+		User user = (User) req.getSession().getAttribute("user");
+
+		Page<Note> page = new NoteService().findNoteListByPage(pageNum, pageSize, user.getUserId());
+
+		req.setAttribute("page", page);
 	}
 }
