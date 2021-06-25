@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.rose.note.dao.NoteDao;
 import com.rose.note.po.Note;
 import com.rose.note.util.Page;
+import com.rose.note.vo.NoteVo;
 import com.rose.note.vo.ResultInfo;
 
 import java.util.List;
@@ -75,5 +76,13 @@ public class NoteService {
         page.setDataList(noteList);
 
         return page;
+    }
+
+    public List<NoteVo> findNoteCountByDate(Integer userId) {
+        return noteDao.findNoteCountByDate(userId);
+    }
+
+    public List<NoteVo> findNoteCountByType(Integer userId) {
+        return noteDao.findNoteCountByType(userId);
     }
 }
