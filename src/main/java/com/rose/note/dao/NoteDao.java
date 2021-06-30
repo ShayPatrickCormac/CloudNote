@@ -1,5 +1,6 @@
 package com.rose.note.dao;
 
+import cn.hutool.core.util.StrUtil;
 import com.rose.note.po.Note;
 import com.rose.note.vo.NoteVo;
 
@@ -19,19 +20,32 @@ public class NoteDao {
         return row;
     }
 
-    public long findNoteCount(Integer userId) {
-        String sql = "select count(1) from tb_note n inner join tb_note_type t on n.typeId = t.typeId where userId = ?";
+    public long findNoteCount(Integer userId, String title) {
+        String sql = "select count(1) from tb_note n inner join tb_note_type t on n.typeId = t.typeId where userId = ? ";
         List<Object> params = new ArrayList<>();
         params.add(userId);
+
+        // determine if search term is empty
+        if (!StrUtil.isBlank(title)) {
+            sql += "and title like concat('%', ?, '%')";
+            params.add(title);
+        }
 
         long count = (long) BaseDao.findSingleValue(sql, params);
         return count;
     }
 
-    public List<Note> findNoteListByPage(Integer userId, Integer index, Integer pageSize) {
-        String sql = "select noteId, title, pubTime from tb_note n inner join tb_note_type t on n.typeId = t.typeId where userId = ? limit ?, ?";
+    public List<Note> findNoteListByPage(Integer userId, Integer index, Integer pageSize, String title) {
+        String sql = "select noteId, title, pubTime from tb_note n inner join tb_note_type t on n.typeId = t.typeId where userId = ? ";
         List<Object> params = new ArrayList<>();
         params.add(userId);
+
+        if (!StrUtil.isBlank(title)) {
+            sql += "and title like concat('%', ?, '%') ";
+            params.add(title);
+        }
+
+        sql += " limit ?, ?";
         params.add(index);
         params.add(pageSize);
         List<Note> noteList = BaseDao.queryRows(sql, params, Note.class);

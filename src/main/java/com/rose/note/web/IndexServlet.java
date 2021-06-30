@@ -21,8 +21,18 @@ public class IndexServlet extends HttpServlet {
 		// Set navbar highlight
 		req.setAttribute("menu_page", "index");
 
+		String actionName = req.getParameter("actionName");
+		if ("searchTitle".equals(actionName)) {
+			String title = req.getParameter("title");
+			req.setAttribute("title", title);
+			noteList(req, resp, title);
+		}
+		else  {
+			noteList(req, resp,null);
+		}
+
 		//Note pages
-		noteList(req, resp);
+
 
 
 		// Set dynamically included index page
@@ -31,13 +41,13 @@ public class IndexServlet extends HttpServlet {
 		req.getRequestDispatcher("index.jsp").forward(req, resp);
 	}
 
-	private void noteList(HttpServletRequest req, HttpServletResponse resp) {
+	private void noteList(HttpServletRequest req, HttpServletResponse resp, String title) {
 		String pageNum = req.getParameter("pageNum");
 		String pageSize = req.getParameter("pageSize");
 
 		User user = (User) req.getSession().getAttribute("user");
 
-		Page<Note> page = new NoteService().findNoteListByPage(pageNum, pageSize, user.getUserId());
+		Page<Note> page = new NoteService().findNoteListByPage(pageNum, pageSize, user.getUserId(), title);
 
 		req.setAttribute("page", page);
 

@@ -44,10 +44,10 @@
                 <li <c:if test="${menu_page=='report'}">class="active"</c:if>><a href="report"><i class="glyphicon glyphicon-signal"></i>&nbsp;Statistics Report</a></li>
 
                 </ul>
-            <form class="navbar-form navbar-right" role="search" action="main">
+            <form class="navbar-form navbar-right" role="search" action="index">
                 <div class="form-group">
-                    <input type="hidden" name="act" value="searchKey">
-                    <input type="text" name="val" class="form-control" placeholder="Search Note">
+                    <input type="hidden" name="actionName" value="searchTitle">
+                    <input type="text" name="title" class="form-control" placeholder="Search Note" value="${title}">
                 </div>
                 <button type="submit" class="btn btn-default">Search</button>
             </form>
