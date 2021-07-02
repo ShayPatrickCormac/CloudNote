@@ -74,7 +74,7 @@
                 <div>
                     <ul class="nav nav-pills nav-stacked">
                         <c:forEach items="${dateInfo}" var="item">
-                            <li><a href="">${item.groupName} <span class="badge">${item.noteCount}</span></a></li>
+                            <li><a href="index?actionName=searchDate&date=${item.groupName}">${item.groupName} <span class="badge">${item.noteCount}</span></a></li>
                         </c:forEach>
                     </ul>
                 </div>
@@ -89,7 +89,7 @@
                 <div>
                     <ul class="nav nav-pills nav-stacked" id="typeUl">
                         <c:forEach items="${typeInfo}" var="item">
-                        <li id="li_${item.typeId}"><a href=""><span id="sp_${item.typeId}">${item.groupName}</span> <span class="badge">${item.noteCount}</span></a></li>
+                        <li id="li_${item.typeId}"><a href="index?actionName=searchType&typeId=${item.typeId}"><span id="sp_${item.typeId}">${item.groupName}</span> <span class="badge">${item.noteCount}</span></a></li>
                         </c:forEach>
 
                     </ul>

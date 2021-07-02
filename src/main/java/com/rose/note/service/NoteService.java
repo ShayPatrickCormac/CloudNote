@@ -51,7 +51,7 @@ public class NoteService {
         return resultInfo;
     }
 
-    public Page<Note> findNoteListByPage(String pageNumStr, String pageSizeStr, Integer userId, String title) {
+    public Page<Note> findNoteListByPage(String pageNumStr, String pageSizeStr, Integer userId, String title, String date, String typeId) {
         Integer pageNum = 1; //default at page 1
         Integer pageSize = 5; //default 10 records per page
 
@@ -63,7 +63,7 @@ public class NoteService {
             pageSize = Integer.parseInt(pageSizeStr);
         }
 
-        long count = noteDao.findNoteCount(userId, title);
+        long count = noteDao.findNoteCount(userId, title, date, typeId);
         if (count < 1) {
             return null;
         }
@@ -72,7 +72,7 @@ public class NoteService {
         //Get index from DB
         Integer index = (pageNum - 1) * pageSize;
 
-        List<Note> noteList = noteDao.findNoteListByPage(userId, index, pageSize, title);
+        List<Note> noteList = noteDao.findNoteListByPage(userId, index, pageSize, title, date, typeId);
         page.setDataList(noteList);
 
         return page;

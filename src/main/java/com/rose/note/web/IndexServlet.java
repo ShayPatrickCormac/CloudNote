@@ -25,10 +25,21 @@ public class IndexServlet extends HttpServlet {
 		if ("searchTitle".equals(actionName)) {
 			String title = req.getParameter("title");
 			req.setAttribute("title", title);
-			noteList(req, resp, title);
+			noteList(req, resp, title, null, null);
 		}
+		else if ("searchDate".equals(actionName)) {
+			String date = req.getParameter("date");
+			req.setAttribute("date", date);
+			noteList(req, resp, null, date, null);
+		}
+		else if ("searchType".equals(actionName)) {
+			String typeId = req.getParameter("typeId");
+			req.setAttribute("typeId", typeId);
+			noteList(req, resp, null, null, typeId);
+		}
+
 		else  {
-			noteList(req, resp,null);
+			noteList(req, resp,null, null, null);
 		}
 
 		//Note pages
@@ -41,13 +52,13 @@ public class IndexServlet extends HttpServlet {
 		req.getRequestDispatcher("index.jsp").forward(req, resp);
 	}
 
-	private void noteList(HttpServletRequest req, HttpServletResponse resp, String title) {
+	private void noteList(HttpServletRequest req, HttpServletResponse resp, String title, String date, String typeId) {
 		String pageNum = req.getParameter("pageNum");
 		String pageSize = req.getParameter("pageSize");
 
 		User user = (User) req.getSession().getAttribute("user");
 
-		Page<Note> page = new NoteService().findNoteListByPage(pageNum, pageSize, user.getUserId(), title);
+		Page<Note> page = new NoteService().findNoteListByPage(pageNum, pageSize, user.getUserId(), title, date, typeId);
 
 		req.setAttribute("page", page);
 
