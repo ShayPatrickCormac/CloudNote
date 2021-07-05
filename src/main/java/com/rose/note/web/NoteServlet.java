@@ -26,7 +26,17 @@ public class NoteServlet extends HttpServlet {
             noteView(req, resp);
         } else if ("addOrUpdate".equals(actionName)) {
             addOrUpdate(req, resp);
+        } else if ("detail".equals(actionName)) {
+            noteDetail(req, resp);
         }
+    }
+
+    private void noteDetail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String noteId = req.getParameter("noteId");
+        Note note = noteService.findNoteById(noteId);
+        req.setAttribute("note", note);
+        req.setAttribute("changePage", "note/detail.jsp");
+        req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 
     private void addOrUpdate(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

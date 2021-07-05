@@ -85,4 +85,12 @@ public class NoteService {
     public List<NoteVo> findNoteCountByType(Integer userId) {
         return noteDao.findNoteCountByType(userId);
     }
+
+    public Note findNoteById(String noteId) {
+        if (StrUtil.isEmpty(noteId)) {
+            return null;
+        }
+        Note note = noteDao.findNoteById(noteId);
+        return note;
+    }
 }

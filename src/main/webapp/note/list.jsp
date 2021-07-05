@@ -27,7 +27,7 @@
         <div class="note_datas">
             <ul>
                 <c:forEach items="${page.dataList}" var="item">
-                <li><fmt:formatDate value="${item.pubTime}" pattern="yyyy-MM-dd"/> &nbsp;&nbsp;<a href="">${item.title}</a> </li>
+                <li><fmt:formatDate value="${item.pubTime}" pattern="yyyy-MM-dd"/> &nbsp;&nbsp;<a href="note?actionName=detail&noteId=${item.noteId}">${item.title}</a> </li>
                 </c:forEach>
             </ul>
         </div>
@@ -36,19 +36,19 @@
             <ul class="pagination  center">
                 <c:if test="${page.pageNum > 1}">
                 <li>
-                    <a href="index?pageNum=${page.prePage}">
+                    <a href="index?pageNum=${page.prePage}&actionName=${action}&title=${title}&date=${date}&typeId=${typeId}">
                         <span>«</span>
                     </a>
                 </li>
                 </c:if>
                 <c:forEach begin="${page.startNavPage}" end="${page.endNavPage}" var="p">
                     <li <c:if test="${page.pageNum == p}">class="active" </c:if>>
-                        <a href="index?pageNum=${p}">${p}</a>
+                        <a href="index?pageNum=${p}&actionName=${action}&title=${title}&date=${date}&typeId=${typeId}">${p}</a>
                     </li>
                 </c:forEach>
                 <c:if test="${page.pageNum < page.totalPages}">
                 <li>
-                    <a href="index?pageNum=${page.nextPage}">
+                    <a href="index?pageNum=${page.nextPage}&actionName=${action}&title=${title}&date=${date}&typeId=${typeId}">
                         <span>»</span>
                     </a>
                 </li>

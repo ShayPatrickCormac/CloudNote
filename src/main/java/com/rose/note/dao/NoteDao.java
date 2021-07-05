@@ -93,4 +93,12 @@ public class NoteDao {
         List<NoteVo> list = BaseDao.queryRows(sql, params, NoteVo.class);
         return list;
     }
+
+    public Note findNoteById(String noteId) {
+        String sql = "select noteId, title, content, pubTime, typeName from tb_note n inner join tb_note_type t on n.typeId = t.typeId where noteId = ?";
+        List<Object> params = new ArrayList<>();
+        params.add(noteId);
+        Note note = (Note) BaseDao.queryRow(sql, params, Note.class);
+        return note;
+    }
 }

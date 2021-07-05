@@ -22,6 +22,10 @@ public class IndexServlet extends HttpServlet {
 		req.setAttribute("menu_page", "index");
 
 		String actionName = req.getParameter("actionName");
+
+		// set actionName to req field (fix page issue)
+		req.setAttribute("action", actionName);
+
 		if ("searchTitle".equals(actionName)) {
 			String title = req.getParameter("title");
 			req.setAttribute("title", title);
