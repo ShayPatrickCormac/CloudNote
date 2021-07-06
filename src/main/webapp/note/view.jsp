@@ -13,7 +13,13 @@
 
     <div class="data_list">
         <div class="data_list_title">
-            <span class="glyphicon glyphicon-cloud-upload"></span>&nbsp;Add note
+            <span class="glyphicon glyphicon-cloud-upload"></span>&nbsp;
+            <c:if test="${empty noteInfo}">
+                Add Note
+            </c:if>
+            <c:if test="${!empty noteInfo}">
+                Modify Note
+            </c:if>
         </div>
         <div class="container-fluid">
             <div class="container-fluid">
@@ -28,13 +34,22 @@
                         <form class="form-horizontal" method="post" action="note">
                             <%-- Set hidden field --%>
                             <input type="hidden" name="actionName" value="addOrUpdate">
+                            <!-- noteId hidden field -->
+                            <input type="hidden" name="noteId" value="${noteInfo.noteId}">
                             <div class="form-group">
                                 <label for="typeId" class="col-sm-2 control-label">type:</label>
                                 <div class="col-sm-8">
                                     <select id="typeId" class="form-control" name="typeId">
                                         <option value="">Select note type</option>
                                         <c:forEach var="item" items="${typeList}">
-                                            <option <c:if test="${resultInfo.result.typeId == item.typeId}">selected</c:if> value="${item.typeId}">${item.typeName}</option>
+                                            <c:choose>
+                                                <c:when test="${!empty resultInfo}">
+                                                    <option <c:if test="${resultInfo.result.typeId == item.typeId}">selected</c:if> value="${item.typeId}">${item.typeName}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option <c:if test="${noteInfo.typeId == item.typeId}">selected</c:if> value="${item.typeId}">${item.typeName}</option>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
 
 
@@ -45,15 +60,30 @@
                             <div class="form-group">
                                 <label for="title" class="col-sm-2 control-label">Title:</label>
                                 <div class="col-sm-8">
-                                    <input class="form-control" name="title" id="title" placeholder="Note Title" value="${resultInfo.result.title}">
+                                    <c:choose>
+                                        <c:when test="${!empty resultInfo}">
+                                            <input class="form-control" name="title" id="title" placeholder="Note Title" value="${resultInfo.result.title}">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input class="form-control" name="title" id="title" placeholder="Note Title" value="${noteInfo.title}">
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="title" class="col-sm-2 control-label">Content:</label>
                                 <div class="col-sm-8">
-<%--                                        prepare the container for editor--%>
-                                    <textarea id="content" name="content">${resultInfo.result.content}</textarea>
+                                    <c:choose>
+                                        <c:when test="${!empty resultInfo}">
+                                            <%--                                        prepare the container for editor--%>
+                                            <textarea id="content" name="content">${resultInfo.result.content}</textarea>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <%--                                        prepare the container for editor--%>
+                                            <textarea id="content" name="content">${noteInfo.content}</textarea>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                             <div class="form-group">

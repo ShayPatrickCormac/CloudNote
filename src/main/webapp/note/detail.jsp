@@ -20,8 +20,8 @@
                 <p>${note.content}</p>
             </div>
             <div class="note_btn">
-                <button class="btn btn-primary" type="button" onclick="update(${note.noteId})">Modify</button>
-                <button class="btn btn-danger" type="button" onclick="del(${note.noteId})">Delete</button>
+                <button class="btn btn-primary" type="button" onclick="updateNote(${note.noteId})">Modify</button>
+                <button class="btn btn-danger" type="button" onclick="deleteNote(${note.noteId})">Delete</button>
             </div>
 
 
@@ -31,25 +31,42 @@
 
     </div>
 
-    <script>
-        function update(data){
-            window.location="note?noteId="+data;
-        }
-
-        function del(data){
-            swal({title: "Delete Alert",
-                text: "Are you sure about this deletion？",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                cancelButtonText: "Cancel",
-                confirmButtonText: "Yes"
-            }).then(function(isConfirm) {
-                if (isConfirm === true) {
-                    window.location="note?act=del&noteId="+data;
-                }
-            });
-        }
-    </script>
-
 </div>
+
+<script type="text/javascript">
+
+    function deleteNote(noteId) {
+        swal({
+            title: "",
+            text: "<h3>Are you sure you want to delete this?</h3>",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "orange",
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel"
+        }).then(function(){
+            $.ajax({
+               type: "post",
+               url: "note",
+               data:{
+                   actionName: "delete",
+                   noteId: noteId
+               },
+               success: function (code) {
+                   if (code == 1) {
+                       window.location.href = "index";
+                   } else {
+                       swal("", "<h3>Delete failed</h3>", "error");
+                   }
+               }
+            });
+
+        });
+    }
+
+    function updateNote(noteId) {
+        window.location.href = "note?actionName=view&noteId="+noteId;
+    }
+
+
+</script>

@@ -12,7 +12,7 @@ import java.util.List;
 public class NoteService {
     private NoteDao noteDao = new NoteDao();
 
-    public ResultInfo<Note> addOrUpdate(String typeId, String title, String content) {
+    public ResultInfo<Note> addOrUpdate(String typeId, String title, String content, String noteId) {
         ResultInfo<Note> resultInfo = new ResultInfo<>();
 
 
@@ -37,6 +37,12 @@ public class NoteService {
         note.setTitle(title);
         note.setContent(content);
         note.setTypeId(Integer.parseInt(typeId));
+
+        // Determine if noteId is empty
+        if (StrUtil.isBlank(noteId)) {
+            note.setNoteId(Integer.parseInt(noteId));
+        }
+
         resultInfo.setResult(note);
 
         int row = noteDao.addOrUpdate(note);
@@ -92,5 +98,16 @@ public class NoteService {
         }
         Note note = noteDao.findNoteById(noteId);
         return note;
+    }
+
+    public Integer deleteNote(String noteId) {
+        if (StrUtil.isBlank(noteId)) {
+            return 0;
+        }
+        int row = noteDao.deleteNoteById(noteId);
+        if (row > 0) {
+            return 1;
+        }
+        return 0;
     }
 }

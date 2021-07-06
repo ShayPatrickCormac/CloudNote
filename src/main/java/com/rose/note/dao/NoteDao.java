@@ -9,12 +9,21 @@ import java.util.List;
 
 public class NoteDao {
     public int addOrUpdate(Note note) {
-        String sql = "insert into tb_note (typeId, title, content, pubTime) values (?, ?, ?, now())";
+        String sql = "";
 
         List<Object> params = new ArrayList<>();
         params.add(note.getTypeId());
         params.add(note.getTitle());
         params.add(note.getContent());
+
+
+        //Determine if noteId is empty, if empty, create, if not, modify
+        if (note.getNoteId() == null) { // create
+            sql = "insert into tb_note (typeId, title, content, pubTime) values (?, ?, ?, now())";
+        } else { // modify
+            sql = "update tb_note set typeId = ?, title = ?, content = ? where noteId = ?";
+            params.add(note.getNoteId());
+        }
 
         int row = BaseDao.executeUpdate(sql, params);
         return row;
@@ -62,7 +71,7 @@ public class NoteDao {
             params.add(typeId);
         }
 
-        sql += " limit ?, ?";
+        sql += " order by pubTime desc limit ?, ?";
         params.add(index);
         params.add(pageSize);
         List<Note> noteList = BaseDao.queryRows(sql, params, Note.class);
@@ -95,10 +104,19 @@ public class NoteDao {
     }
 
     public Note findNoteById(String noteId) {
-        String sql = "select noteId, title, content, pubTime, typeName from tb_note n inner join tb_note_type t on n.typeId = t.typeId where noteId = ?";
+        String sql = "select noteId, title, content, pubTime, typeName, n.typeId from tb_note n inner join tb_note_type t on n.typeId = t.typeId where noteId = ?";
         List<Object> params = new ArrayList<>();
         params.add(noteId);
         Note note = (Note) BaseDao.queryRow(sql, params, Note.class);
         return note;
+    }
+
+    public int deleteNoteById(String noteId) {
+        String sql = "delete from tb_note where noteId = ?";
+        List<Object> params = new ArrayList<>();
+        params.add(noteId);
+        int row = BaseDao.executeUpdate(sql, params);
+
+        return row;
     }
 }

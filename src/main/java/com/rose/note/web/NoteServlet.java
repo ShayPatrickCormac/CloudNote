@@ -1,5 +1,6 @@
 package com.rose.note.web;
 
+import cn.hutool.core.util.StrUtil;
 import com.rose.note.po.Note;
 import com.rose.note.po.NoteType;
 import com.rose.note.po.User;
@@ -28,7 +29,16 @@ public class NoteServlet extends HttpServlet {
             addOrUpdate(req, resp);
         } else if ("detail".equals(actionName)) {
             noteDetail(req, resp);
+        } else if ("delete".equals(actionName)) {
+            noteDelete(req, resp);
         }
+    }
+
+    private void noteDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String noteId = req.getParameter("noteId");
+        Integer code = noteService.deleteNote(noteId);
+        resp.getWriter().write(code + "");
+        resp.getWriter().close();
     }
 
     private void noteDetail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,17 +54,32 @@ public class NoteServlet extends HttpServlet {
         String title = req.getParameter("title");
         String content = req.getParameter("content");
 
-        ResultInfo<Note> resultInfo = noteService.addOrUpdate(typeId, title, content);
+        //If it is modify op, need noteId for that
+        String noteId = req.getParameter("noteId");
+
+        ResultInfo<Note> resultInfo = noteService.addOrUpdate(typeId, title, content, noteId);
 
         if (resultInfo.getCode() == 1) {
             resp.sendRedirect("index");
         } else {
             req.setAttribute("resultInfo", resultInfo);
-            req.getRequestDispatcher("note?actionName=view").forward(req, resp);
+
+            String url = "note?actionName=view";
+            // if modify, need to pass noteId
+            if (!StrUtil.isBlank(noteId)) {
+                url += "&noteId=" + noteId;
+            }
+            req.getRequestDispatcher(url).forward(req, resp);
         }
     }
 
     private void noteView(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //Modify note
+        String noteId = req.getParameter("noteId");
+        Note note = noteService.findNoteById(noteId);
+        req.setAttribute("noteInfo", note);
+
+
         User user = (User) req.getSession().getAttribute("user");
         // get type list by user id
         List<NoteType> typeList = new NoteTypeService().findTypeList(user.getUserId());
