@@ -27,7 +27,7 @@ public class NoteService {
             resultInfo.setMsg("Title can't be empty");
             return resultInfo;
         }
-        if (StrUtil.isBlank(typeId)) {
+        if (StrUtil.isBlank(content)) {
             resultInfo.setCode(0);
             resultInfo.setMsg("Content can't be empty");
             return resultInfo;
@@ -39,7 +39,7 @@ public class NoteService {
         note.setTypeId(Integer.parseInt(typeId));
 
         // Determine if noteId is empty
-        if (StrUtil.isBlank(noteId)) {
+        if (!StrUtil.isBlank(noteId)) {
             note.setNoteId(Integer.parseInt(noteId));
         }
 
