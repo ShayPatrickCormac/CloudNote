@@ -7,7 +7,10 @@ import com.rose.note.util.Page;
 import com.rose.note.vo.NoteVo;
 import com.rose.note.vo.ResultInfo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NoteService {
     private NoteDao noteDao = new NoteDao();
@@ -109,5 +112,30 @@ public class NoteService {
             return 1;
         }
         return 0;
+    }
+
+    public ResultInfo<Map<String, Object>> queryNoteCountByMonth(Integer userId) {
+        ResultInfo<Map<String, Object>> resultInfo = new ResultInfo<>();
+
+        List<NoteVo> noteVos = noteDao.findNoteCountByDate(userId);
+
+        if (noteVos != null && noteVos.size() > 0) {
+            List<String> monthList = new ArrayList<>();
+            List<Integer> noteCountList = new ArrayList<>();
+
+            for (NoteVo noteVo: noteVos) {
+                monthList.add(noteVo.getGroupName());
+                noteCountList.add((int) noteVo.getNoteCount());
+            }
+            Map<String, Object> map = new HashMap<>();
+            map.put("monthArray", monthList);
+            map.put("dataArray", noteCountList);
+            resultInfo.setCode(1);
+            resultInfo.setResult(map);
+        }
+
+
+
+        return resultInfo;
     }
 }

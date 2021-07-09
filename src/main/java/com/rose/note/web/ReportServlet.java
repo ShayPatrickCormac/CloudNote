@@ -1,14 +1,23 @@
 package com.rose.note.web;
 
+import com.rose.note.po.User;
+import com.rose.note.service.NoteService;
+import com.rose.note.util.JsonUtil;
+import com.rose.note.vo.ResultInfo;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet("/report")
 public class ReportServlet extends HttpServlet {
+
+    private NoteService noteService = new NoteService();
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("menu_page", "report");
@@ -16,7 +25,15 @@ public class ReportServlet extends HttpServlet {
         String actionName = req.getParameter("actionName");
         if ("info".equals(actionName)) {
             reportInfo(req, resp);
+        } else if ("month".equals(actionName)) {
+            queryNoteCountByMonth(req, resp);
         }
+    }
+
+    private void queryNoteCountByMonth(HttpServletRequest req, HttpServletResponse resp) {
+        User user = (User) req.getSession().getAttribute("user");
+        ResultInfo<Map<String, Object>> resultInfo = noteService.queryNoteCountByMonth(user.getUserId());
+        JsonUtil.toJson(resp, resultInfo);
     }
 
     private void reportInfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
