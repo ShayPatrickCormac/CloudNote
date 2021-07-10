@@ -1,5 +1,6 @@
 package com.rose.note.web;
 
+import com.rose.note.po.Note;
 import com.rose.note.po.User;
 import com.rose.note.service.NoteService;
 import com.rose.note.util.JsonUtil;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/report")
@@ -27,7 +29,16 @@ public class ReportServlet extends HttpServlet {
             reportInfo(req, resp);
         } else if ("month".equals(actionName)) {
             queryNoteCountByMonth(req, resp);
+        } else if ("location".equals(actionName)) {
+            // get location of notes
+            queryNoteLonAndLat(req, resp);
         }
+    }
+
+    private void queryNoteLonAndLat(HttpServletRequest req, HttpServletResponse resp) {
+        User user = (User) req.getSession().getAttribute("user");
+        ResultInfo<List<Note>> resultInfo = noteService.queryNoteLonAndLat(user.getUserId());
+        JsonUtil.toJson(resp, resultInfo);
     }
 
     private void queryNoteCountByMonth(HttpServletRequest req, HttpServletResponse resp) {

@@ -53,11 +53,14 @@ public class NoteServlet extends HttpServlet {
         String typeId = req.getParameter("typeId");
         String title = req.getParameter("title");
         String content = req.getParameter("content");
+        // get coordinates
+        String lon = req.getParameter("lon");
+        String lat = req.getParameter("lat");
 
         //If it is modify op, need noteId for that
         String noteId = req.getParameter("noteId");
 
-        ResultInfo<Note> resultInfo = noteService.addOrUpdate(typeId, title, content, noteId);
+        ResultInfo<Note> resultInfo = noteService.addOrUpdate(typeId, title, content, noteId, lon, lat);
 
         if (resultInfo.getCode() == 1) {
             resp.sendRedirect("index");

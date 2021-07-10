@@ -14,4 +14,6 @@ public class Note {
     private Integer typeId;
     private Date pubTime;
     private String typeName;
+    private Float lon;
+    private Float lat;
 }

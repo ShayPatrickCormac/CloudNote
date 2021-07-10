@@ -36,6 +36,9 @@
                             <input type="hidden" name="actionName" value="addOrUpdate">
                             <!-- noteId hidden field -->
                             <input type="hidden" name="noteId" value="${noteInfo.noteId}">
+                            <!-- Store coordinates -->
+                            <input type="hidden" name="lon" id="lon">
+                            <input type="hidden" name="lat" id="lat">
                             <div class="form-group">
                                 <label for="typeId" class="col-sm-2 control-label">type:</label>
                                 <div class="col-sm-8">
@@ -127,4 +130,17 @@
         }
         return true;
     }
+</script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4Cni41KK98sT5cyU2A5Wq8SSSSgFZrVu"></script>
+<script type="text/javascript">
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            console.log("coord: " + r.point.lng + ", " + r.point.lat);
+            $("#lon").val(r.point.lng);
+            $("#lat").val(r.point.lat);
+        } else {
+            console.log("failed: " + this.getStatus());
+        }
+    });
 </script>

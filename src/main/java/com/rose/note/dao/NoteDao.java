@@ -19,7 +19,9 @@ public class NoteDao {
 
         //Determine if noteId is empty, if empty, create, if not, modify
         if (note.getNoteId() == null) { // create
-            sql = "insert into tb_note (typeId, title, content, pubTime) values (?, ?, ?, now())";
+            sql = "insert into tb_note (typeId, title, content, pubTime, lon, lat) values (?, ?, ?, now(), ?, ?)";
+            params.add(note.getLon());
+            params.add(note.getLat());
         } else { // modify
             sql = "update tb_note set typeId = ?, title = ?, content = ? where noteId = ?";
             params.add(note.getNoteId());
@@ -118,5 +120,13 @@ public class NoteDao {
         int row = BaseDao.executeUpdate(sql, params);
 
         return row;
+    }
+
+    public List<Note> queryNoteList(Integer userId) {
+        String sql = "select lon, lat from tb_note n inner join tb_note_type t on n.typeId = t.typeId where userId = ?";
+        List<Object> params = new ArrayList<>();
+        params.add(userId);
+        List<Note> list = BaseDao.queryRows(sql, params, Note.class);
+        return list;
     }
 }

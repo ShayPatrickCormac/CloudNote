@@ -120,23 +120,36 @@
         myChart.setOption(option);
     }
 
-    loadBaiduMap();
-    function loadBaiduMap() {
+    $.ajax({
+        type: "get",
+        url: "report",
+        data: {
+            actionName: "location"
+        },
+        success: function (result) {
+            console.log(result);
+            if (result.code == 1) {
+                loadBaiduMap(result.result);
+            }
+        }
+    });
+    function loadBaiduMap(markers) {
         var map = new BMapGL.Map("baiduMap");
         var point = new BMapGL.Point(116.404, 39.915);
         // initialization
-        map.centerAndZoom(point, 15);
+        map.centerAndZoom(point, 10);
         map.enableScrollWheelZoom(true);
         var zoomCtrl = new BMapGL.ZoomControl();
         map.addControl(zoomCtrl);
 
-        var marker1 = new BMapGL.Marker(new BMapGL.Point(116.404, 39.925));
-        var marker2 = new BMapGL.Marker(new BMapGL.Point(116.404, 39.915));
-        var marker3 = new BMapGL.Marker(new BMapGL.Point(116.395, 39.935));
-        var marker4 = new BMapGL.Marker(new BMapGL.Point(116.415, 39.931));
-        map.addOverlay(marker1);
-        map.addOverlay(marker2);
-        map.addOverlay(marker3);
-        map.addOverlay(marker4);
+        //Determine if marker exists
+        if (markers != null && markers.length > 0) { // first coord in the set is current position, the rest is the coord in note records
+            map.centerAndZoom(new BMapGL.Point(markers[0].lon, markers[0].lat), 10);
+            for (var i = 1; i < markers.length; i++) {
+                var marker = new BMapGL.Marker(new BMapGL.Point(markers[i].lon, markers[i].lat));
+                map.addOverlay(marker);
+            }
+        }
+
     }
 </script>

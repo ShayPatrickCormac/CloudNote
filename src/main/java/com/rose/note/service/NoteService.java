@@ -15,7 +15,7 @@ import java.util.Map;
 public class NoteService {
     private NoteDao noteDao = new NoteDao();
 
-    public ResultInfo<Note> addOrUpdate(String typeId, String title, String content, String noteId) {
+    public ResultInfo<Note> addOrUpdate(String typeId, String title, String content, String noteId, String lon, String lat) {
         ResultInfo<Note> resultInfo = new ResultInfo<>();
 
 
@@ -36,10 +36,18 @@ public class NoteService {
             return resultInfo;
         }
 
+        //set default value for coord
+        if (lon == null || lat == null) {
+            lon = "-77.036";
+            lat = "38.907";
+        }
+
         Note note = new Note();
         note.setTitle(title);
         note.setContent(content);
         note.setTypeId(Integer.parseInt(typeId));
+        note.setLon(Float.parseFloat(lon));
+        note.setLat(Float.parseFloat(lat));
 
         // Determine if noteId is empty
         if (!StrUtil.isBlank(noteId)) {
@@ -135,6 +143,20 @@ public class NoteService {
         }
 
 
+
+        return resultInfo;
+    }
+
+    public ResultInfo<List<Note>> queryNoteLonAndLat(Integer userId) {
+        ResultInfo<List<Note>> resultInfo = new ResultInfo<>();
+
+        List<Note> noteList = noteDao.queryNoteList(userId);
+
+        //Determine if empty
+        if (noteList != null && noteList.size() > 0) {
+            resultInfo.setCode(1);
+            resultInfo.setResult(noteList);
+        }
 
         return resultInfo;
     }
